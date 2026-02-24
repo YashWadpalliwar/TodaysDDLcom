@@ -1,0 +1,84 @@
+show databases;
+
+create database My_sql_Data;
+
+use My_sql_Data;
+
+create table Myemployees(empid int primary key, empname varchar(100), salary int, 
+	gender varchar(50) unique, department varchar(50) unique);
+    
+show tables;
+
+describe Myemployees;
+
+-- DDL 
+
+select * from myemployees;
+
+alter table myemployees rename mydata;
+
+show tables;
+
+select * from mydata;
+
+alter table mydata add address varchar(200);
+
+alter table mydata add city varchar(50), add pincode int;
+
+alter table mydata change column salary emp_sal int;
+
+describe mydata;
+
+alter table mydata modify department varchar(100);
+
+alter table mydata modify empid varchar(20);
+
+select * from mydata;
+
+alter table mydata drop column city, drop pincode;
+
+drop table mydata;
+
+drop database My_sql_Data;
+
+use largedata1;
+
+show tables;
+
+select * from employees;
+
+truncate employees;
+
+delete from employees where id = 7;
+
+drop table mydata;
+
+drop database largedata1;
+
+
+
+-----------------------------------------------------------------------------------------------
+create database Students;
+
+use Students;
+
+create table user1(stu_roll int primary key, 
+	Stu_name varchar(50), marks int); 
+    
+insert into user1 values(106, "Name5", 70);
+
+select * from user1;
+
+
+create table user2(tec_id int primary key not null, foreign key(tec_id) references user1(stu_roll),
+	tec_name varchar(50), tec_sub varchar(50));
+    
+insert into user2 values(106, "Tec2", "Sub2");
+
+select * from user2;
+
+alter table user2 drop foreign key user2_ibfk_1;
+
+alter table user2 drop column tec_id;
+
+
