@@ -1,0 +1,110 @@
+use joins;
+
+select * from user3;
+
+-- select * from user1
+-- inner join user2 on
+-- user1.id = user2.srno
+-- inner join user3 on
+-- user1.id = user3.id;
+
+select * from user1
+inner join user2 on
+user1.id = user2.srno;
+
+select * from user1 
+left join user2 on
+user1.id = user2.srno
+union 
+select * from user1 
+right join user2 on
+user1.id = user2.srno;
+
+
+use joins;
+
+select * from employeesdata;
+
+
+
+------------------------------------------------------------------------
+select * from employeesdata;
+
+-- 1) Get the name of each employee and their salary along with the 
+	-- highest salary in the company using subquery:
+
+SELECT name, salary,
+    (SELECT max(salary) FROM employeesdata) AS highest_salary
+FROM employeesdata;
+
+
+-- 2) Find all employees' names who have a salary greater than the 
+	-- average salary of all employees using subquery:
+
+SELECT name,salary FROM employeesdata WHERE 
+    salary > (SELECT AVG(salary) FROM employeesdata);
+
+select avg(salary) from employeesdata;
+
+-- 3) Find all employees' names who have less than 1
+	-- years of experience compared to Rajesh Kumar using subquery:
+
+SELECT name,experience FROM employeesdata WHERE 
+    experience < (SELECT experience FROM employeesdata WHERE name = 'Manish Chawla') - 1;
+    
+    
+select sum(salary) from employeesdata;
+    
+select * from employeesdata WHERE name = 'Manish Chawla';
+
+
+use analyticfun;
+
+select * from aggregatefun;
+
+select name,department,salary,
+	count(salary) over(partition by department order by department) as result
+from aggregatefun;
+
+
+select *,
+	row_number() over(order by department desc) as 'Result' 
+from aggregatefun;
+
+
+-------------------------------------------------------------------------------------------------------------
+
+-- 1. Select only employee names and departments using CTE
+
+WITH EmpNames AS (
+  SELECT Name, Department
+  FROM employeesdata
+)
+SELECT * FROM EmpNames;
+
+-- --------------------------------------------------------- 
+ -- 2. List employees who are younger than 30
+ 
+ WITH YoungEmployees AS ( 
+	SELECT * FROM employeesdata WHERE Age > 40
+)
+SELECT * FROM YoungEmployees;
+
+-- --------------------------------------------------------- 
+-- 3. Find all female employees
+
+WITH FemaleEmployees AS (
+  SELECT * FROM employeesdata
+  WHERE Gender = 'Female'
+)
+SELECT * FROM FemaleEmployees;
+
+-- --------------------------------------------------------- 
+ -- 4. Show employees from 'Data Analysis' department
+ WITH DataTeam AS (
+  SELECT * FROM employeesdata
+  WHERE Department = 'Data Analysis'
+)
+SELECT * FROM DataTeam;
+
+
