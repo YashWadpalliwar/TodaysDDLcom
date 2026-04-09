@@ -1,97 +1,60 @@
-# DML :- Inserting,deleting,updateing
-# DQL :- 
-# Agg :- 
-# clouse :- 
-
-create database Practice;
-
-use Practice;
-
 select * from employeesdata;
+use largedata1;
 
-delete from employeesdata where nmae = 10;
-SET SQL_SAFE_UPDATES = 0;
-
-update employeesdata set salary = 80000 where id = 9;
+update employeesdata set salary = 80000 where id = 8;
 
 update employeesdata set name = "Yash" where id = 3;
 
-update employeesdata set name = "Ankit",age = 20, department = "Web design" 
-	where id = 27;
+update employeesdata set age = 16, experience = 1, salary = 9000 where id = 4;
 
 UPDATE employeesdata
-SET salary = CASE
-	WHEN salary = 50000 THEN 70000
-    WHEN salary = 5000 THEN 80000
-    WHEN salary = 60000 THEN 90000
+SET age = CASE
+    WHEN id = 1 THEN 21
+    WHEN id = 2 THEN 22
+    WHEN id = 3 THEN 23
 END
-WHERE salary IN (50000, 5000, 60000);
+WHERE id IN (1, 2, 3);
 
-select * from employeesdata;
-
-select name,experience,salary from employeesdata limit 5;
-
-select count(id) from employeesdata limit 5 offset 9;
-
-select distinct department from employeesdata;
-
-select * from employeesdata where experience >= 20 or gender = "female";
-
-select * from employeesdata where not gender = "male";
-
-select * from employeesdata where gender not in ("male", "other");
-
-select * from employeesdata where salary between 5000 and 10000;
-
-select * from employeesdata where name like 'Y%';
-
--- Aggregate functions in SQL perform calculations on a set of values and return a single result.
-
--- 	COUNT(): Counts the number of rows.
--- 	SUM(): Calculates the total sum of a numeric column.
--- 	AVG(): Computes the average of a numeric column.
--- 	MIN(): Finds the minimum value in a column.
--- 	MAX(): Finds the maximum value in a column.
-
-select min(salary) as min_salary from employeesdata;
-
-
-SELECT DATE_FORMAT(CURRENT_DATE(), '%d %m %y') AS mydate;
-
-SELECT DATE_FORMAT(NOW(), '%d %M %Y') AS mydate;
-
-SELECT DATE_FORMAT('2024-12-12', '%d %M %Y') AS mydate;
-
-SELECT STR_TO_DATE('12-12-2024', '%d-%m-%Y') AS mydate;
+update employeesdata set
+experience = case 
+when id = 16 then 1
+when id = 17 then 2
+when id = 18 then 3
+when id = 19 then 4
+end 
+where id in (16,17,18,19);
 
 
 select * from employeesdata;
 
-select name,experience,salary,department from employeesdata order by experience;
+select name,salary,department from employeesdata;
 
-select distinct gender from employeesdata order by gender;
+select id,name,salary from employeesdata limit 10;
 
-select gender,count(gender) from employeesdata group by gender;
+select * from employeesdata limit 5 offset 25;
 
--- Total experience for each department?
+select distinct gender from employeesdata;
 
-select department, max(experience) from employeesdata group by department;
+select * from employeesdata where salary > 80000;
 
+select * from employeesdata where gender = "male";
 
--- Maximum salary in each gender?
+select * from employeesdata where department = "Data analysis";
 
-select gender, max(salary) as max_sal from employeesdata group by gender order by max_sal;
+select * from employeesdata where salary > 80000 or gender = "others";
 
--- Minimum age in each department?
+select 50 * 50;
 
+select 600 > 90;
 
+select * from employeesdata where not experience = 1;
 
--- Find Department Where the Minimum Salary is Greater Than 70,000 using having.
-
-select department,min(salary) from employeesdata group by department having min(salary) >= 70000;
-
--- Find Genders Where the Total Salary is Greater Than 70,000 using having.
-
-select gender,sum(salary) from employeesdata group by gender having sum(salary) > 70000;
+select * from employeesdata where gender in ("other","male") order by salary desc;
 
 
+
+
+
+ 
+ 
+ 
