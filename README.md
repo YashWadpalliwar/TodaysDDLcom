@@ -52,7 +52,80 @@ select * from employeesdata where not experience = 1;
 select * from employeesdata where gender in ("other","male") order by salary desc;
 
 
+------------------------------------------------------------------------------------
+use largedata1;
 
+select * from employeesdata;
+
+select * from employeesdata where id like '%1';
+
+select sum(salary) as result from employeesdata;
+
+select avg(salary) as avg from employeesdata;
+
+select max(salary) as avg from employeesdata;
+
+select count(id) as Count_rows, sum(salary) as Total_Sum, avg(salary) as avg_total,
+	min(salary) as min_value, max(salary) from employeesdata;
+
+SELECT DATE_FORMAT(CURRENT_DATE(), '%d %M %Y') AS mydate; 
+
+SELECT DATE_FORMAT(NOW(), '%d %M %Y') AS mydate1;
+
+SELECT DATE_FORMAT('2024-12-12', '%d %M %Y') AS mydate;
+
+SELECT STR_TO_DATE('12-12-2024', '%d-%m-%Y') AS mydate;
+
+select * from employeesdata;
+
+select name, salary, experience from employeesdata order by name limit 5;
+
+select distinct gender from employeesdata order by gender;
+
+
+-- Total experience for each department
+SELECT department, sum(experience) as total
+FROM employeesdata GROUP BY department;
+
+
+-- Maximum salary in each gender
+SELECT gender, MAX(salary) AS max_salary
+FROM employeesdata
+GROUP BY gender;
+
+-- Minimum age in each department
+SELECT department, MIN(age) AS min_age
+FROM employeesdata
+GROUP BY department;
+
+-- Number of employees earning above 60,000 (by gender)
+SELECT gender, COUNT(*) AS employee_count
+FROM employeesdata
+WHERE salary > 60000
+GROUP BY gender;
+
+
+-- Department where MIN salary > 70,000
+SELECT department, MIN(salary) AS min_salary
+FROM employeesdata GROUP BY department
+HAVING MIN(salary) > 70000;
+
+-- Gender where MAX salary > 80,000
+SELECT gender, MAX(salary) AS max_salary
+FROM employeesdata GROUP BY gender
+HAVING MAX(salary) > 80000;
+
+-- Department where AVG salary > 60,000
+SELECT department, AVG(salary) AS avg_salary
+FROM employeesdata
+GROUP BY department
+HAVING AVG(salary) > 60000;
+
+-- Gender where TOTAL salary > 70,000
+SELECT gender, SUM(salary) AS total_salary
+FROM employeesdata
+GROUP BY gender
+HAVING SUM(salary) > 70000;
 
 
  
