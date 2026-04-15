@@ -127,6 +127,40 @@ FROM employeesdata
 GROUP BY gender
 HAVING SUM(salary) > 70000;
 
+-----------------------------------------------------------------------------------------
+Joins and if stements
+use joins;
+
+select * from user1
+left join user2 on
+user1.id = user2.srno
+union
+select * from user1
+right join user2 on
+user1.id = user2.srno;
+
+select * from cross1 cross join cross2 order by employeeid;
+
+-- SELECT * FROM table_name1 as a JOIN table_name1 as b ON a.id = b.productid;
+
+select * from self as a join self as b on a.id = b.productid;
+
+select * from natural1 natural join natural2;
+
+select * from union_students_2023
+union all
+select * from union2_students_2024;
+
+use largedata1;
+select * from employeesdata where salary > 100000;
+
+select name,age,experience,salary,department,
+if(salary > 80000 and experience > 8, "Leave", "Not Leave", "Leave", "Not Leave") as result, 
+as result2 from employeesdata;
+
+
+
+
 
  
  
