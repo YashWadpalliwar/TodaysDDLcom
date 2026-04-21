@@ -1,0 +1,69 @@
+use largedata1;
+
+select * from EmployeesData1 where department = "app";
+
+use joins;
+
+select * from union_students_2023
+union all
+select * from union2_students_2024;
+
+
+-- 1) Get the name of each employee and their salary 
+	-- along with the highest salary in the company using subquery:
+
+SELECT name, salary,
+    (SELECT MAX(salary) FROM EmployeesData1) AS highest_salary
+FROM 
+    EmployeesData1;
+
+
+-- 2) Find all employees' names who have a salary 
+	-- greater than the average salary of all employees using subquery:
+
+SELECT name,salary FROM EmployeesData1
+WHERE salary > (SELECT AVG(salary) FROM EmployeesData1);
+
+select avg(salary) from EmployeesData1;
+
+-- 3) Find all employees' names who have less 
+	-- than 2 years of experience compared to Rajesh Kumar using subquery:
+
+select * from employeesdata1;
+
+SELECT name,experience,salary 
+FROM employeesdata1 WHERE 
+    experience < 
+	(SELECT experience FROM employeesdata1 WHERE name = 'Rajesh Pillai') - 2;
+
+select name,salary,
+ (select max(salary) from employeesdata1) as result1,
+ (select min(salary) from employeesdata1) as result2
+from employeesdata1;
+
+
+SELECT name, salary FROM employeesdata1 WHERE not EXISTS 
+	(SELECT * FROM employeesdata1 WHERE department = "app");
+    
+
+
+select * from employeesdata1 where salary > 100000;
+
+use analyticfun;
+
+select * from aggregatefun;
+
+select name,department,salary, 
+	count(salary) over(partition by department order by salary)
+as result from aggregatefun;
+
+select * from aggregatefun;
+
+select *,
+	row_number() over(order by department) as `row` from aggregatefun;
+
+
+
+
+
+
