@@ -158,10 +158,77 @@ select name,age,experience,salary,department,
 if(salary > 80000 and experience > 8, "Leave", "Not Leave", "Leave", "Not Leave") as result, 
 as result2 from employeesdata;
 
+-----------------------------------------------------------------------------
 
 
+use analyticfun;
+
+select * from percent_cume;
+
+select *, cume_dist() over(order by sales) as Result from percent_cume;
+
+select * from value_function;
+
+select *, last_value(salary) over(order by salary) as result from value_function;
+
+SELECT *, LAST_VALUE(salary) OVER(ORDER BY salary
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS 
+Highest_Salary FROM value_function;
+
+select *, nth_value(salary,2) over(order by salary) as result
+ from value_function;
+
+-- SecondHight_Salary Interview Ques
+
+SELECT salary FROM (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS `DR`
+    FROM value_function) AS second_highest
+WHERE DR = 2;
 
 
+select *,day(salary_date) from extract_table;
+
+SELECT EXTRACT(YEAR FROM '2024-12-21') AS year;
+SELECT EXTRACT(MONTH FROM '2024-12-21') AS month;
+SELECT EXTRACT(DAY FROM '2024-12-21') AS day;
+SELECT EXTRACT(HOUR FROM '2024-12-21 15:45:00') AS hour;
+SELECT EXTRACT(MINUTE FROM '2024-12-21 11:45:30') AS minute;
+SELECT EXTRACT(SECOND FROM '2024-12-21 10:45:50') AS second;
+
+select * from string_functions;
+
+SHOW FULL TABLES WHERE table_type = 'VIEW';      
+
+
+use largedata1;
+
+create view onlymale as
+	select name,salary,gender from employeesdata where gender = "male" ;
+
+select * from onlymale;
+
+create view Experienced_Employees as
+ select name,experience from employeesdata where experience > 5;
+ 
+ select * from Experienced_Employees;
+ 
+ create view Management_Employees as
+  select name,experience , salary from employeesdata where experience between 5 and 10;
+  
+  select * from Management_Employees;
+  
+  use joins;
+  
+  select * from employeesdata;
+
+drop view Management_Employees;
+
+
+select * from user2;
+create view skills1 as 
+select * from user1 
+inner join user2 on user1.id = user2.srno;
+select * from skills1;
  
  
  
