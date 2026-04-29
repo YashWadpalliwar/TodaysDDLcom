@@ -229,6 +229,145 @@ create view skills1 as
 select * from user1 
 inner join user2 on user1.id = user2.srno;
 select * from skills1;
- 
+
+
+
+SET AUTOCOMMIT = 0;
+use largedata1;
+
+select * from employeesdata;
+
+START TRANSACTION;
+
+UPDATE employeesdata SET age = 25 WHERE id = 2;
+
+COMMIT;
+
+select * from employeesdata;
+
+ROLLBACK;  -- Not possible after commit
+
+-- --------------------------------------------------- 
+
+SET AUTOCOMMIT = 0;
+
+START TRANSACTION;
+
+-- Step 1
+DELETE FROM employeesdata WHERE id = 1;
+SAVEPOINT A1;
+
+-- Step 2
+DELETE FROM employeesdata WHERE id = 2;
+SAVEPOINT A2;
+
+-- Step 3
+DELETE FROM employeesdata WHERE id = 3;
+SAVEPOINT A3;
+
+-- Rollback to A2
+ROLLBACK TO SAVEPOINT A1;
+
+-- Check result
+SELECT * FROM employeesdata;
+
+COMMIT;
+
+RELEASE SAVEPOINT A1;
+
+
+use largedata1;
+select * from employeesdata;
+
+DELIMITER $$ 
+CREATE FUNCTION Showmsg()
+RETURNS VARCHAR(100)
+DETERMINISTIC
+BEGIN
+    RETURN 'Hello SQL and Hello Fireblaze Students...';
+END$$ 
+DELIMITER 	;
+
+SELECT Showmsg();
+
+DROP FUNCTION IF EXISTS Addition;
+
+-- Addition of two numbers 
+DELIMITER $$
+CREATE FUNCTION Addition(num1 INT, num2 INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    RETURN num1 * num2;
+END$$
+DELIMITER ;
+
+select Addition(2,3);
+
+
+
+Store command
+
+use largedata1;
+
+select * from employeesdata;
+
+DELIMITER $$
+CREATE PROCEDURE SimpleSelect()
+BEGIN
+    SELECT * FROM employeesdata where id = 2;
+END $$
+DELIMITER 	;
+
+call SimpleSelect();
+
+DELIMITER $$
+CREATE PROCEDURE UpdateExample()
+BEGIN
+    UPDATE employeesdata SET age = 30 WHERE id = 2;
+END $$
+DELIMITER ;
+
+call UpdateExample(); 
+
+
+DELIMITER $$
+CREATE PROCEDURE DeleteExample()
+BEGIN
+    DELETE FROM employeesdata WHERE id = 10;
+END $$
+DELIMITER  ;
+
+
+DELIMITER $$
+CREATE PROCEDURE Salary()
+BEGIN
+    select * from employeesdata where salary > 80000;
+END $$
+DELIMITER ;
+
+call Salary();
+
+
+use joins;
+
+DELIMITER $$
+CREATE PROCEDURE JoinedUsers()
+BEGIN
+    SELECT user1.*, user2.* FROM user1
+    INNER JOIN user2 ON 
+        user1.id = user2.srno;
+END $$
+
+DELIMITER ;
+
+
+call JoinedUsers;
+
+
+
+
+
+
  
  
