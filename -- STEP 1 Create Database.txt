@@ -1,0 +1,87 @@
+-- STEP 1: Create Database
+
+CREATE DATABASE IF NOT EXISTS data_cleaning_demo;
+
+USE data_cleaning_demo;
+
+-- STEP 2: Create Raw Table
+
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100),
+    email VARCHAR(150),
+    phone VARCHAR(50),
+    city VARCHAR(100),
+    signup_date VARCHAR(50),
+    age INT,
+    income VARCHAR(50)
+);
+
+-- STEP 3: Insert Raw (Dirty) Data
+INSERT INTO customers (full_name, email, phone, city, signup_date, age, income) VALUES
+('  Hamza Khan  ', ' HAMZA@Example.COM ', '+91-98765 43210', 'mumbai ', '12-05-2023', 32, '90k'),
+('Ayesha ', ' ayesha@example.com', '(987)6543210', 'Mumbai', '2023/06/10', 28, '50000'),
+('  JOHN   DOE', 'john..doe@Example.com', '98765 43210', 'new york', '10-06-2023', 35, NULL);
+
+
+
+-- STEP 4: CLEANING STARTS HERE
+SET SQL_SAFE_UPDATES = 0;
+-- 1. Trim spaces
+UPDATE customers
+SET full_name = TRIM(full_name),
+    email = TRIM(email),
+    city = TRIM(city);
+
+-- 2. Lowercase email
+UPDATE customers
+SET email = LOWER(email);
+
+-- 3. Clean phone numbers (digits only)
+UPDATE customers
+SET phone = REGEXP_REPLACE(phone, '[^0-9]', '');
+
+
+select * from customers;
+
+-- 4. Clean city format (First letter capital)
+UPDATE customers
+SET city = CONCAT(UPPER(LEFT(city,1)), LOWER(SUBSTRING(city,2)));
+
+-- 5. Convert mixed date formats to proper DATE
+UPDATE customers
+SET signup_date = STR_TO_DATE(signup_date, '%d-%m-%Y')
+WHERE signup_date LIKE '%-%-%';
+
+UPDATE customers
+SET signup_date = STR_TO_DATE(signup_date, '%Y/%m/%d')
+WHERE signup_date LIKE '%/%/%';
+
+select * from customers;
+
+-- 6. Replace NULL income with 0
+UPDATE customers
+SET income = '0'
+WHERE income IS NULL;
+
+-- 7. Remove duplicate rows (keep first ID)
+
+DELETE c1 FROM customers c1 JOIN customers c2
+ON c1.email = c2.email
+AND c1.phone = c2.phone
+WHERE c1.id > c2.id;
+
+select * from customers;
+
+-- STEP 5: STORE CLEAN DATA PERMANENTLY
+
+DROP TABLE IF EXISTS customers_clean;
+
+CREATE TABLE customers_clean AS
+SELECT 
+    id,full_name,email,phone,city,signup_date,age,income
+FROM customers;
+
+-- STEP 6: VIEW FINAL CLEAN DATA
+
+SELECT * FROM customers_clean;
